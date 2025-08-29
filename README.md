@@ -1,6 +1,6 @@
-# 🏃‍♂️ FlightPhase — TFRRS Scraper & Hierarchical LSTM Forecaster
+# 🏃‍♂️ FlightPhase — WorldAthletics Scraper & Hierarchical LSTM Forecaster
 
-> End-to-end pipeline to **scrape** collegiate T&F performances from TFRRS, **cache & preprocess** them, and **forecast next-season peaks** with a hierarchical LSTM that understands **per-season sequences** and **per-event heads**.
+> End-to-end pipeline to **scrape** collegiate T&F performances from World Athletics, **cache & preprocess** them, and **forecast next-season peaks** with a hierarchical LSTM that understands **per-season sequences** and **per-event heads**.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/placeholder/flightphase-hero.gif" alt="Demo" width="760">
@@ -38,13 +38,17 @@
 
 ```mermaid
 flowchart LR
-  subgraph Season[t = a season (sequence of marks)]
+  subgraph Season
+    direction LR
     X[(marks: value, Δdays, wind)]
+    label1[[a season (sequence of marks)]]
   end
   X --> LSTM1((Season LSTM))
   Lab[SeasonLabel Embedding] -->|concat| CAT[Concat]
   LSTM1 --> CAT
-  subgraph Fam[Family history (K seasons)]
+  subgraph Fam
+    direction LR
+    label2[[Family history (K seasons)]]
     CAT --> LSTM2((Across-Season LSTM))
   end
   LSTM2 --> FEmb[Family Embedding]
@@ -57,7 +61,7 @@ flowchart LR
 
 ```
 .
-├─ ScrapeFromTfrrs_Fast.py        # scrape → structured .npy (or .csv)
+├─ ScrapeFromWorldAthletics_Fast.py        # scrape → structured .npy (or .csv)
 ├─ ForecastHGF-LSTM.ipynb         # training notebook (prep + train + metrics)
 ├─ utils_cache_io.py              # parquet/pickle-safe I/O helpers
 ├─ models_HierGenderFamilies/
@@ -93,7 +97,7 @@ pip install pyarrow fastparquet || echo "Parquet engines are optional"
 ### 1) Scrape (fast, skip slow pages)
 
 ```bash
-python ScrapeFromTfrrs_Fast.py -i tfrrs_all_ncaa_urls.csv -o tfrrs_performances_fast.npy --limit 500
+python ScrapeFromWorldAthletics_Fast.py -i WorldAthletics_all_ncaa_urls.csv -o WorldAthletics_performances_fast.npy --limit 500
 ```
 
 > 5s hard cap per URL. Blocks heavy assets (png/jpg/mp4/woff/...).
@@ -108,7 +112,7 @@ from datetime import datetime
 import os, json, pandas as pd, numpy as np
 
 # 1) Load marks (from .npy or .csv → DataFrame)
-df = load_df("tfrrs_performances_fast.npy")   # your helper that parses times/distances/dates
+df = load_df("WorldAthletics_performances_fast.npy")   # your helper that parses times/distances/dates
 peaks_all = build_family_season_peaks(df)
 seqs, lens, evt_used = build_mark_sequences_by_family(df, seqlen=32)
 
@@ -270,4 +274,4 @@ We predict the next-season peak for the **same season label** as the most recent
 
 ## 🧾 License
 
-MIT — do cool things, attribute when you can. Please be a good citizen to TFRRS (polite delays, low QPS, cache aggressively).
+MIT — do cool things, attribute when you can. Please be a good citizen to WorldAthletics (polite delays, low QPS, cache aggressively).
