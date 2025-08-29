@@ -51,9 +51,11 @@ flowchart LR
   FEmb -->|per event| Heads{Event-Specific Heads}
   Heads --> ZPred[Peak (z-space)]
   ZPred -->|de-normalize by event| Pred[Peak (native units)]
-📦 Project Structure
-arduino
-Copy code
+```
+
+## 📦 Project Structure
+
+```
 .
 ├─ ScrapeFromTfrrs_Fast.py        # scrape → structured .npy (or .csv)
 ├─ ForecastHGF-LSTM.ipynb         # training notebook (prep + train + metrics)
@@ -65,10 +67,13 @@ Copy code
 │  └─ Women/
 ├─ PredictionScript.py            # interactive CLI: “put in my marks → next season peak”
 └─ README.md
-🚀 Quickstart
-0) Prereqs
-bash
-Copy code
+```
+
+## 🚀 Quickstart
+
+### 0) Prereqs
+
+```bash
 # Windows PowerShell example
 python -m venv .venv
 .venv\Scripts\activate
@@ -79,23 +84,25 @@ pip install selenium webdriver-manager
 pip install torch --index-url https://download.pytorch.org/whl/cu121   # or CPU wheel
 # Parquet optional (we auto-fallback to pickle if missing)
 pip install pyarrow fastparquet || echo "Parquet engines are optional"
-Chrome is required for Selenium (Chromium/Edge also okay). WebDriver is auto-managed.
+```
 
-1) Scrape (fast, skip slow pages)
-bash
-Copy code
+> Chrome is required for Selenium (Chromium/Edge also okay). WebDriver is auto-managed.
+
+---
+
+### 1) Scrape (fast, skip slow pages)
+
+```bash
 python ScrapeFromTfrrs_Fast.py -i tfrrs_all_ncaa_urls.csv -o tfrrs_performances_fast.npy --limit 500
-5s hard cap per URL (no 2-minute Selenium stalls).
+```
 
-Blocks heavy assets (png/jpg/mp4/woff/...) to reduce load.
+> 5s hard cap per URL. Blocks heavy assets (png/jpg/mp4/woff/...).
 
-If log spam appears (e.g., absl/TFLite), it’s redirected to the void.
+---
 
-2) Precompute & Cache (run once)
-In the training notebook (or a plain .py), run Block 1:
+### 2) Precompute & Cache (run once)
 
-python
-Copy code
+```python
 from utils_cache_io import save_table, load_table, save_dict_table, load_dict_table, save_seqs_npz
 from datetime import datetime
 import os, json, pandas as pd, numpy as np
@@ -115,11 +122,13 @@ save_seqs_npz(seqs, paths["seqs"])
 
 with open(paths["manifest"], "w") as f:
     json.dump({"created_utc": datetime.utcnow().isoformat()+"Z"}, f, indent=2)
-Subsequent runs load these instantly. No more 45-minute rebuilds.
+```
 
-3) Train (Hierarchical LSTM)
-python
-Copy code
+---
+
+### 3) Train (Hierarchical LSTM)
+
+```python
 # In notebook or script
 args = build_defaults()
 df         = load_table(paths["df"])
@@ -130,118 +139,93 @@ seqs       = load_seqs_npz(paths["seqs"])
 
 # Build windows → split → DataLoaders → train
 # (See notebook cell "Training Loop" – includes tqdm bars + early stopping)
-What the model sees:
+```
 
-X: [N, K, L, F] (F=3 → value, Δdays, wind)
+> X: [N, K, L, F] (F=3 → value, Δdays, wind)
 
-K: seasons back (e.g., 4)
+---
 
-L: marks per season (e.g., 32)
+### 4) Predict (Interactive CLI)
 
-Label = next season peak for the same label as the last window season.
-
-4) Predict (Interactive CLI)
-bash
-Copy code
+```bash
 python PredictionScript.py
-# Prompts:
-# - Model dir (e.g., models_HierGenderFamilies/Men)
-# - Predict NEXT season from (Indoors/Outdoors)
-# - Pick your event
-# - Paste your marks (one per line):
-#   2025-02-10, 6.85
-#   2025-02-22, 6.90, +0.9
-#   6.88
-#   ...
-Example input (Outdoors / Triple Jump):
+```
 
-yaml
-Copy code
+> Prompts:
+> - Model dir (e.g., `models_HierGenderFamilies/Men`)
+> - Season label: Indoors or Outdoors
+> - Event name
+> - Paste marks:
+```
 2025-03-29, 13.31, +0.2
 2025-04-17, 12.80, +2.2
 2025-04-26, 12.77, +2.6
 2025-05-09, 13.25, +3.3
-Output:
+```
 
-vbnet
-Copy code
+> Output:
+```
 Predicted NEXT season (Outdoors) peak for Triple Jump: 13.54m
-(Estimated from z-space via event-wise μ, σ learned at train-time)
-🛠️ Configuration (edit in-file)
-Sequence length per season (SEQLEN_MARKS, default 32)
+```
 
-History seasons (K_SEASONS, default 4)
+---
 
-Hidden sizes (HID_SEASON, HID_ACROSS)
+## 🛠️ Configuration (edit in-file)
 
-SeasonLabel embedding dim (EMB_LABEL)
+- `SEQLEN_MARKS`, default `32`
+- `K_SEASONS`, default `4`
+- `HID_SEASON`, `HID_ACROSS`
+- `EMB_LABEL` (SeasonLabel emb dim)
+- Batch size / LR / Epochs / Early stopping
+- Min train samples per event
 
-Batch size / LR / Epochs / Early stop patience
+---
 
-Min train samples per event filter
+## 🧪 Tips & Troubleshooting
 
-These are all defined near the top of the training script; no CLI flags required.
+<details><summary><b>Parquet / ArrowKeyError</b></summary>
 
-🧪 Tips & Troubleshooting
-<details> <summary><b>Parquet / ArrowKeyError</b></summary>
-If you see:
-
-pgsql
-Copy code
+```pgsql
 ArrowKeyError: A type extension with name pandas.period already defined
-Your environment registered an Arrow extension twice. Easiest fix: fallback to pickle.
+```
 
-Our I/O helpers do this automatically:
+> Fix: fallback to pickle
 
-If pyarrow/fastparquet present → write .parquet
-
-Else → write/read .pkl next to the parquet path transparently
-
-You can force pickle by setting an env var before running:
-
-bash
-Copy code
+```bash
 set FP_FORCE_PICKLE=1      # Windows
 export FP_FORCE_PICKLE=1   # macOS/Linux
-</details> <details> <summary><b>CUDA device-side assert / mysterious GPU errors</b></summary>
-Run with synchronous launches:
-
-bash
-Copy code
-set CUDA_LAUNCH_BLOCKING=1      # Windows
-export CUDA_LAUNCH_BLOCKING=1   # macOS/Linux
-Common causes:
-
-Bad evt_id at inference (event not in trained evt_list). The CLI guards against this.
-
-Mismatched label vocab (trained with {PAD,Indoor,Outdoor} vs {Indoor,Outdoor}): the loader inspects label_emb.weight and maps appropriately.
-
-</details> <details> <summary><b>state_dict key mismatch when loading model</b></summary>
-We auto-detect per-event head variant:
-
-mlp32: Linear(hid→32)→ReLU→Linear(32→1)
-
-lnlin: LayerNorm+Linear
-
-linear: Linear(hid→1)
-
-If you still see size/key errors:
-
-Ensure emb_label, hid_*, and number of heads (events) match training (they’re read from meta.json when constructing the model).
-
-</details> <details> <summary><b>Selenium stalls / long page waits</b></summary>
-We set 5s hard cap. If a page still stalls: Chrome crashed or socket broke → restart the run.
-
-Consider lowering PAGE_LOAD_TIMEOUT and blocking more asset types.
-
-You can parallelize scraping in shards (multiple processes with different CSV slices).
+```
 
 </details>
-🧩 Example Snippets
-Minimal prediction (programmatic):
 
-python
-Copy code
+<details><summary><b>CUDA device-side assert / mysterious GPU errors</b></summary>
+
+```bash
+set CUDA_LAUNCH_BLOCKING=1      # Windows
+export CUDA_LAUNCH_BLOCKING=1   # macOS/Linux
+```
+
+</details>
+
+<details><summary><b>state_dict key mismatch when loading model</b></summary>
+
+> Ensure model dim, emb size, and number of event heads match training config.
+
+</details>
+
+<details><summary><b>Selenium stalls / long page waits</b></summary>
+
+> Restart the run. Block more asset types. Shard scraping jobs if needed.
+
+</details>
+
+---
+
+## 🧩 Example Snippets
+
+### Minimal prediction (programmatic)
+
+```python
 from PredictionScript import load_model_from_dir, build_inputs_for_window
 from datetime import datetime
 import torch, numpy as np
@@ -262,21 +246,28 @@ with torch.no_grad():
     z = model(X, Lk, LAB, E).item()
 pred = z * sd_by_event["Triple Jump"] + mu_by_event["Triple Jump"]
 print(pred)
-Training loop skeleton (inside notebook):
+```
 
-python
-Copy code
+---
+
+### Training loop skeleton
+
+```python
 for gender in sorted(df["Gender"].unique()):
     # build windows → split (train<=2023, val==2024) → dataloaders
     # init model from dims in data → train with AdamW + L1Loss
     # early stop by val L1; save best .pth + meta.json
     ...
-🧭 Data & Labels (what are we predicting?)
-For each family (athlete×gender×event-family) and season (e.g., 2024-Outdoors), we compute the peak mark.
+```
 
-We build windows of up to K seasons ending at season t, and the label is the peak of season t+1 with the SAME label (Indoor→Indoor, Outdoor→Outdoor).
+---
 
-Model trains to predict z-normalized peaks (per event), then we de-standardize using per-event μ, σ from train only.
+## 🧭 Data & Labels
 
-🧾 License
+We predict the next-season peak for the **same season label** as the most recent one (Indoor→Indoor, etc.), using z-normalized peaks per event and restoring via train-time μ/σ.
+
+---
+
+## 🧾 License
+
 MIT — do cool things, attribute when you can. Please be a good citizen to TFRRS (polite delays, low QPS, cache aggressively).
