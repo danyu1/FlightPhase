@@ -1,0 +1,277 @@
+{
+  "model_name": "Hier-GenderFamilies",
+  "gender": "Women",
+  "events": [
+    "10,000 Meters",
+    "100 Hurdles",
+    "100 Meters",
+    "1000 Meters",
+    "1500 Meters",
+    "200 Meters",
+    "300 Meters",
+    "3000 Meters",
+    "3000 Steeplechase",
+    "400 Hurdles",
+    "400 Meters",
+    "500 Meters",
+    "5000 Meters",
+    "55 Meters",
+    "60 Hurdles",
+    "60 Meters",
+    "600 Meters",
+    "800 Meters",
+    "Discus",
+    "Hammer",
+    "High Jump",
+    "Javelin",
+    "Long Jump",
+    "Mile",
+    "Pole Vault",
+    "Shot Put",
+    "Triple Jump",
+    "Weight Throw"
+  ],
+  "event2id": {
+    "10,000 Meters": 0,
+    "100 Hurdles": 1,
+    "100 Meters": 2,
+    "1000 Meters": 3,
+    "1500 Meters": 4,
+    "200 Meters": 5,
+    "300 Meters": 6,
+    "3000 Meters": 7,
+    "3000 Steeplechase": 8,
+    "400 Hurdles": 9,
+    "400 Meters": 10,
+    "500 Meters": 11,
+    "5000 Meters": 12,
+    "55 Meters": 13,
+    "60 Hurdles": 14,
+    "60 Meters": 15,
+    "600 Meters": 16,
+    "800 Meters": 17,
+    "Discus": 18,
+    "Hammer": 19,
+    "High Jump": 20,
+    "Javelin": 21,
+    "Long Jump": 22,
+    "Mile": 23,
+    "Pole Vault": 24,
+    "Shot Put": 25,
+    "Triple Jump": 26,
+    "Weight Throw": 27
+  },
+  "mu_by_event": {
+    "10,000 Meters": 2335.23583984375,
+    "100 Hurdles": 15.636543273925781,
+    "100 Meters": 12.796579360961914,
+    "1000 Meters": 191.0902099609375,
+    "1500 Meters": 304.9940185546875,
+    "200 Meters": 26.753297805786133,
+    "300 Meters": 42.632041931152344,
+    "3000 Meters": 642.65625,
+    "3000 Steeplechase": 708.7583618164062,
+    "400 Hurdles": 67.68025970458984,
+    "400 Meters": 60.796573638916016,
+    "500 Meters": 82.08100128173828,
+    "5000 Meters": 1118.7864990234375,
+    "55 Meters": 7.7130866050720215,
+    "60 Hurdles": 9.36009693145752,
+    "60 Meters": 8.11073112487793,
+    "600 Meters": 103.25404357910156,
+    "800 Meters": 148.0884246826172,
+    "Discus": 36.60837936401367,
+    "Hammer": 43.64396667480469,
+    "High Jump": 1.5756421089172363,
+    "Javelin": 31.877323150634766,
+    "Long Jump": 5.201258182525635,
+    "Mile": 326.1159362792969,
+    "Pole Vault": 3.440683126449585,
+    "Shot Put": 11.322375297546387,
+    "Triple Jump": 11.18696117401123,
+    "Weight Throw": 14.7427339553833
+  },
+  "sd_by_event": {
+    "10,000 Meters": 214.37661743164062,
+    "100 Hurdles": 1.6301419734954834,
+    "100 Meters": 0.9315782785415649,
+    "1000 Meters": 18.0450496673584,
+    "1500 Meters": 29.575990676879883,
+    "200 Meters": 2.0748324394226074,
+    "300 Meters": 3.111272096633911,
+    "3000 Meters": 53.93696212768555,
+    "3000 Steeplechase": 75.19902038574219,
+    "400 Hurdles": 6.547618865966797,
+    "400 Meters": 4.931972026824951,
+    "500 Meters": 5.798076629638672,
+    "5000 Meters": 94.04621124267578,
+    "55 Meters": 0.41833484172821045,
+    "60 Hurdles": 0.7969970107078552,
+    "60 Meters": 0.5258796811103821,
+    "600 Meters": 10.395491600036621,
+    "800 Meters": 14.306519508361816,
+    "Discus": 8.263145446777344,
+    "Hammer": 8.987621307373047,
+    "High Jump": 0.12108532339334488,
+    "Javelin": 8.288430213928223,
+    "Long Jump": 0.5527250170707703,
+    "Mile": 29.606307983398438,
+    "Pole Vault": 0.4710537791252136,
+    "Shot Put": 2.218018054962158,
+    "Triple Jump": 1.053613305091858,
+    "Weight Throw": 2.810840129852295
+  },
+  "seqlen_marks": 32,
+  "k_seasons": 6,
+  "hid_season": 64,
+  "hid_across": 64,
+  "emb_label": 4,
+  "in_dim": 3,
+  "created": "2025-08-28T09:48:04.710365Z",
+  "val_L1_z": 0.4289164497296903,
+  "val_mae_overall_native": 11.313777923583984,
+  "per_event_val_metrics": [
+    {
+      "event": "10,000 Meters",
+      "val_mae": 156.35008239746094,
+      "n": 318
+    },
+    {
+      "event": "100 Hurdles",
+      "val_mae": 0.614103376865387,
+      "n": 568
+    },
+    {
+      "event": "100 Meters",
+      "val_mae": 0.3253289461135864,
+      "n": 868
+    },
+    {
+      "event": "1000 Meters",
+      "val_mae": 11.79095458984375,
+      "n": 200
+    },
+    {
+      "event": "1500 Meters",
+      "val_mae": 12.689449310302734,
+      "n": 1750
+    },
+    {
+      "event": "200 Meters",
+      "val_mae": 0.6653288006782532,
+      "n": 2705
+    },
+    {
+      "event": "300 Meters",
+      "val_mae": 2.160993814468384,
+      "n": 115
+    },
+    {
+      "event": "3000 Meters",
+      "val_mae": 39.189727783203125,
+      "n": 1215
+    },
+    {
+      "event": "3000 Steeplechase",
+      "val_mae": 45.77809143066406,
+      "n": 365
+    },
+    {
+      "event": "400 Hurdles",
+      "val_mae": 2.4331748485565186,
+      "n": 427
+    },
+    {
+      "event": "400 Meters",
+      "val_mae": 1.866216778755188,
+      "n": 1725
+    },
+    {
+      "event": "500 Meters",
+      "val_mae": 4.304469108581543,
+      "n": 72
+    },
+    {
+      "event": "5000 Meters",
+      "val_mae": 69.81468200683594,
+      "n": 1516
+    },
+    {
+      "event": "55 Meters",
+      "val_mae": 0.25285837054252625,
+      "n": 45
+    },
+    {
+      "event": "60 Hurdles",
+      "val_mae": 0.3021320104598999,
+      "n": 693
+    },
+    {
+      "event": "60 Meters",
+      "val_mae": 0.2113550305366516,
+      "n": 1076
+    },
+    {
+      "event": "600 Meters",
+      "val_mae": 6.248776435852051,
+      "n": 163
+    },
+    {
+      "event": "800 Meters",
+      "val_mae": 6.053335189819336,
+      "n": 2491
+    },
+    {
+      "event": "Discus",
+      "val_mae": 2.7607924938201904,
+      "n": 670
+    },
+    {
+      "event": "Hammer",
+      "val_mae": 2.840592861175537,
+      "n": 692
+    },
+    {
+      "event": "High Jump",
+      "val_mae": 0.05448213219642639,
+      "n": 1062
+    },
+    {
+      "event": "Javelin",
+      "val_mae": 2.635310411453247,
+      "n": 679
+    },
+    {
+      "event": "Long Jump",
+      "val_mae": 0.21236364543437958,
+      "n": 1596
+    },
+    {
+      "event": "Mile",
+      "val_mae": 15.464864730834961,
+      "n": 1385
+    },
+    {
+      "event": "Pole Vault",
+      "val_mae": 0.1689523458480835,
+      "n": 709
+    },
+    {
+      "event": "Shot Put",
+      "val_mae": 0.599129855632782,
+      "n": 1761
+    },
+    {
+      "event": "Triple Jump",
+      "val_mae": 0.4047755300998688,
+      "n": 817
+    },
+    {
+      "event": "Weight Throw",
+      "val_mae": 0.9929988384246826,
+      "n": 639
+    }
+  ],
+  "test_mae_overall": null,
+  "per_event_test_metrics": []
+}
