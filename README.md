@@ -41,20 +41,20 @@ flowchart LR
   subgraph Season
     direction LR
     X[(marks: value, Δdays, wind)]
-    label1[[a season (sequence of marks)]]
+    label1["a season (sequence of marks)"]
   end
   X --> LSTM1((Season LSTM))
-  Lab[SeasonLabel Embedding] -->|concat| CAT[Concat]
+  Lab["SeasonLabel Embedding"] -->|concat| CAT[Concat]
   LSTM1 --> CAT
   subgraph Fam
     direction LR
-    label2[[Family history (K seasons)]]
+    label2["Family history (K seasons)"]
     CAT --> LSTM2((Across-Season LSTM))
   end
-  LSTM2 --> FEmb[Family Embedding]
-  FEmb -->|per event| Heads{Event-Specific Heads}
-  Heads --> ZPred[Peak (z-space)]
-  ZPred -->|de-normalize by event| Pred[Peak (native units)]
+  LSTM2 --> FEmb["Family Embedding"]
+  FEmb -->|per event| Heads{"Event-Specific Heads"}
+  Heads --> ZPred["Peak (z-space)"]
+  ZPred -->|de-normalize by event| Pred["Peak (native units)"]
 ```
 
 ## 📦 Project Structure
