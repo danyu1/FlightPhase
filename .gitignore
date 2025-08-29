@@ -1,0 +1,7 @@
+tfrrs_performances.csv
+tfrrs_performances_fast.ckpt_22000.npy
+.venv/
+models_HierGenderFamilies/cache/
+*.parquet
+*.npz
+*.npy
