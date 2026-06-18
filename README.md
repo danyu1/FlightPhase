@@ -1,4 +1,4 @@
-# 🏃‍♂️ FlightPhase — WorldAthletics Scraper & Hierarchical LSTM Forecaster
+# FlightPhase — WorldAthletics Scraper & Hierarchical LSTM Forecaster
 
 > End-to-end pipeline to **scrape** collegiate T&F performances from World Athletics, **cache & preprocess** them, and **forecast next-season peaks** with a hierarchical LSTM that understands **per-season sequences** and **per-event heads**.
 
@@ -16,7 +16,7 @@
 
 ---
 
-## ✨ Highlights
+## Highlights
 
 - **Fast, polite scraping** of TFRRS “All Performances” pages (w/ hard 5s caps, blocked assets, explicit waits).
 - **Noise-free logs**: silences Chrome/TFLite native STDERR spam.
@@ -34,7 +34,7 @@
 
 ---
 
-## 🧠 Model at a Glance (Mermaid)
+## Model at a Glance (Mermaid)
 
 ```mermaid
 flowchart LR
@@ -57,7 +57,7 @@ flowchart LR
   ZPred -->|de-normalize by event| Pred["Peak (native units)"]
 ```
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 .
@@ -73,7 +73,7 @@ flowchart LR
 └─ README.md
 ```
 
-## 🚀 Quickstart
+## Quickstart
 
 ### 0) Prereqs
 
@@ -225,7 +225,7 @@ export CUDA_LAUNCH_BLOCKING=1   # macOS/Linux
 
 ---
 
-## 🧩 Example Snippets
+## Example Snippets
 
 ### Minimal prediction (programmatic)
 
@@ -266,7 +266,7 @@ for gender in sorted(df["Gender"].unique()):
 
 ---
 
-## 🧭 Data & Labels
+## Data & Labels
 
 We predict the next-season peak for the **same season label** as the most recent one (Indoor→Indoor, etc.), using z-normalized peaks per event and restoring via train-time μ/σ.
 
